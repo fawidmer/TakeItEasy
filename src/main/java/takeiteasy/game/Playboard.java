@@ -106,7 +106,7 @@ public class Playboard {
 		return placedCards.get(getLinearIndex(columnNr, rowNr));
 	}
 
-	public void setAt(PlayingCard playingCard, int columnNr, int rowNr) {
+	public void set(PlayingCard playingCard, int columnNr, int rowNr) {
 		int linearIdx = getLinearIndex(columnNr, rowNr);
 		placedCards.set(linearIdx, playingCard);
 		isPlacedMap.put(playingCard, true);
@@ -115,5 +115,113 @@ public class Playboard {
 	private int getLinearIndex(int columnNr, int rowNr) {
 		final int[] offsets = { 0, 3, 7, 12, 16 };
 		return offsets[columnNr] + rowNr;
+	}
+
+	public int getValueVerticalRow(int i) {
+		List<PlayingCard> row = getVerticalRow(i);
+
+		/* Check if any card is missing on the row */
+		if (row.stream().anyMatch(card -> card == null))
+			return 0;
+
+		/* Check if not destroyed */
+		if (row.stream().allMatch(card -> card.middle == row.get(0).middle))
+			return row.get(0).middle * row.size();
+		else
+			return 0;
+	}
+
+	public int getValueAscendingRow(int i) {
+		List<PlayingCard> row = getAscendingRow(i);
+
+		/* Check if any card is missing on the row */
+		if (row.stream().anyMatch(card -> card == null))
+			return 0;
+
+		/* Check if not destroyed */
+		if (row.stream().allMatch(card -> card.left == row.get(0).left))
+			return row.get(0).left * row.size();
+		else
+			return 0;
+	}
+
+	private List<PlayingCard> getAscendingRow(int i) {
+		switch (i) {
+		case 0:
+			return getListOfCardsFromListOfInt(new int[] { 0, 3, 7 });
+
+		case 1:
+			return getListOfCardsFromListOfInt(new int[] { 1, 4, 8, 12 });
+
+		case 2:
+			return getListOfCardsFromListOfInt(new int[] { 2, 5, 9, 13, 16 });
+
+		case 3:
+			return getListOfCardsFromListOfInt(new int[] { 6, 10, 14, 17 });
+
+		case 4:
+			return getListOfCardsFromListOfInt(new int[] { 11, 15, 18 });
+
+		default:
+			throw new IllegalArgumentException("Row number must be between 0 and 4.");
+		}
+
+	}
+
+	private List<PlayingCard> getListOfCardsFromListOfInt(int[] indices) {
+		List<PlayingCard> returnList = new ArrayList<>();
+
+		for (int idx : indices)
+			returnList.add(placedCards.get(idx));
+
+		return returnList;
+	}
+
+	public int getValueDescendingRow(int i) {
+		List<PlayingCard> row = getDescendingRow(i);
+
+		/* Check if any card is missing on the row */
+		if (row.stream().anyMatch(card -> card == null))
+			return 0;
+
+		/* Check if not destroyed */
+		if (row.stream().allMatch(card -> card.right == row.get(0).right))
+			return row.get(0).right * row.size();
+		else
+			return 0;
+	}
+
+	private List<PlayingCard> getDescendingRow(int i) {
+		switch (i) {
+		case 0:
+			return getListOfCardsFromListOfInt(new int[] { 7, 12, 16 });
+
+		case 1:
+			return getListOfCardsFromListOfInt(new int[] { 3, 8, 13, 17 });
+
+		case 2:
+			return getListOfCardsFromListOfInt(new int[] { 0, 4, 9, 14, 18 });
+
+		case 3:
+			return getListOfCardsFromListOfInt(new int[] { 1, 5, 10, 15 });
+
+		case 4:
+			return getListOfCardsFromListOfInt(new int[] { 2, 6, 11 });
+
+		default:
+			throw new IllegalArgumentException("Row number must be between 0 and 4.");
+		}
+	}
+
+	public int getScore() {
+		int totalScore = 0;
+
+		for (int i = 0; i < 5; i++) {
+			totalScore += getValueVerticalRow(i);
+			totalScore += getValueAscendingRow(i);
+			totalScore += getValueDescendingRow(i);
+		}
+
+		return totalScore;
 	}
 }
