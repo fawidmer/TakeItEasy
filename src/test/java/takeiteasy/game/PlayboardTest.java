@@ -34,7 +34,17 @@ public class PlayboardTest extends TestCase {
 		board.set(new PlayingCard(6, 1, 3), 4, 1);
 		board.set(new PlayingCard(7, 5, 3), 4, 2);
 
-		System.out.println(board);
+		String expectedString = "        (6,1,8)\n";
+		expectedString += "    (6,9,8) (7,9,8)\n";
+		expectedString += "(6,5,3) (7,1,8) (2,5,8)\n";
+		expectedString += "    (7,9,3) (2,9,8)\n";
+		expectedString += "(7,5,4) (2,1,8) (6,1,3)\n";
+		expectedString += "    (2,9,4) (6,9,3)\n";
+		expectedString += "(2,5,4) (6,1,4) (7,5,3)\n";
+		expectedString += "    (6,9,4) (7,9,4)\n";
+		expectedString += "        (7,1,4)\n\n\n";
+		expectedString += "[(2,5,3), (2,9,3), (2,1,4), (6,5,4), (2,1,3), (7,5,8), (6,5,8), (7,1,3)]";
+		assertEquals(expectedString, board.toString());
 
 		assertEquals(new PlayingCard(7, 9, 4), board.get(3, 3));
 

@@ -62,18 +62,20 @@ public class Playboard {
 	}
 
 	private String toStringHelperThreeCards(int idx) {
-		return toStringHelperDisplayCard(getVerticalRow(0).get(idx)) + spacer
-				+ toStringHelperDisplayCard(getVerticalRow(2).get(idx + 1)) + spacer
-				+ toStringHelperDisplayCard(getVerticalRow(4).get(idx)) + newLine;
+
+		return toStringHelperDisplayCard(placedCards.get(getLinearIndex(0, idx))) + spacer
+				+ toStringHelperDisplayCard(placedCards.get(getLinearIndex(2, idx + 1))) + spacer
+				+ toStringHelperDisplayCard(placedCards.get(getLinearIndex(4, idx))) + newLine;
 	}
 
 	private String toStringHelperTwoCards(int idx) {
-		return longSpacer + toStringHelperDisplayCard(getVerticalRow(1).get(idx)) + spacer
-				+ toStringHelperDisplayCard(getVerticalRow(3).get(idx)) + newLine;
+		return longSpacer + toStringHelperDisplayCard(placedCards.get(getLinearIndex(1, idx))) + spacer
+				+ toStringHelperDisplayCard(placedCards.get(getLinearIndex(3, idx))) + newLine;
 	}
 
 	private String toStringHelperSingleCard(int idx) {
-		return longSpacer + longSpacer + toStringHelperDisplayCard(getVerticalRow(2).get(idx * 4)) + newLine;
+		return longSpacer + longSpacer + toStringHelperDisplayCard(placedCards.get(getLinearIndex(2, idx * 4)))
+				+ newLine;
 	}
 
 	private static String toStringHelperDisplayCard(PlayingCard card) {
@@ -83,8 +85,8 @@ public class Playboard {
 			return card.toString();
 	}
 
-	private List<PlayingCard> getVerticalRow(int idx) {
-		List<PlayingCard> list = new ArrayList<>();
+	private List<Integer> getVerticalRow(int idx) {
+		List<Integer> list = new ArrayList<>();
 		int numberOfCards;
 
 		if (idx == 0 || idx == 4)
@@ -97,7 +99,7 @@ public class Playboard {
 			throw new IndexOutOfBoundsException("Cannot get vertical row number" + idx);
 
 		for (int i = 0; i < numberOfCards; i++)
-			list.add(get(idx, i));
+			list.add(get(idx, i).middle);
 
 		return list;
 	}
@@ -118,49 +120,29 @@ public class Playboard {
 	}
 
 	public int getValueVerticalRow(int i) {
-		List<PlayingCard> row = getVerticalRow(i);
-
-		/* Check if any card is missing on the row */
-		if (row.stream().anyMatch(card -> card == null))
-			return 0;
-
-		/* Check if not destroyed */
-		if (row.stream().allMatch(card -> card.middle == row.get(0).middle))
-			return row.get(0).middle * row.size();
-		else
-			return 0;
+		return getValue(getVerticalRow(i));
 	}
 
 	public int getValueAscendingRow(int i) {
-		List<PlayingCard> row = getAscendingRow(i);
-
-		/* Check if any card is missing on the row */
-		if (row.stream().anyMatch(card -> card == null))
-			return 0;
-
-		/* Check if not destroyed */
-		if (row.stream().allMatch(card -> card.left == row.get(0).left))
-			return row.get(0).left * row.size();
-		else
-			return 0;
+		return getValue(getAscendingRow(i));
 	}
 
-	private List<PlayingCard> getAscendingRow(int i) {
+	private List<Integer> getAscendingRow(int i) {
 		switch (i) {
 		case 0:
-			return getListOfCardsFromListOfInt(new int[] { 0, 3, 7 });
+			return getListOfCardsFromListOfInt(new int[] { 0, 3, 7 }, "left");
 
 		case 1:
-			return getListOfCardsFromListOfInt(new int[] { 1, 4, 8, 12 });
+			return getListOfCardsFromListOfInt(new int[] { 1, 4, 8, 12 }, "left");
 
 		case 2:
-			return getListOfCardsFromListOfInt(new int[] { 2, 5, 9, 13, 16 });
+			return getListOfCardsFromListOfInt(new int[] { 2, 5, 9, 13, 16 }, "left");
 
 		case 3:
-			return getListOfCardsFromListOfInt(new int[] { 6, 10, 14, 17 });
+			return getListOfCardsFromListOfInt(new int[] { 6, 10, 14, 17 }, "left");
 
 		case 4:
-			return getListOfCardsFromListOfInt(new int[] { 11, 15, 18 });
+			return getListOfCardsFromListOfInt(new int[] { 11, 15, 18 }, "left");
 
 		default:
 			throw new IllegalArgumentException("Row number must be between 0 and 4.");
@@ -168,45 +150,53 @@ public class Playboard {
 
 	}
 
-	private List<PlayingCard> getListOfCardsFromListOfInt(int[] indices) {
-		List<PlayingCard> returnList = new ArrayList<>();
+	private List<Integer> getListOfCardsFromListOfInt(int[] indices, String fieldName) {
+		List<Integer> returnList = new ArrayList<>();
 
 		for (int idx : indices)
-			returnList.add(placedCards.get(idx));
+			try {
+				returnList.add(PlayingCard.class.getField(fieldName).getInt(placedCards.get(idx)));
+			} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
+				throw new IllegalArgumentException(e);
+			} catch (NullPointerException e) {
+				returnList.add(null);
+			}
 
 		return returnList;
 	}
 
 	public int getValueDescendingRow(int i) {
-		List<PlayingCard> row = getDescendingRow(i);
+		return getValue(getDescendingRow(i));
+	}
 
+	private int getValue(List<Integer> row) {
 		/* Check if any card is missing on the row */
-		if (row.stream().anyMatch(card -> card == null))
+		if (row.stream().anyMatch(value -> value == null))
 			return 0;
 
 		/* Check if not destroyed */
-		if (row.stream().allMatch(card -> card.right == row.get(0).right))
-			return row.get(0).right * row.size();
+		if (row.stream().allMatch(card -> card == row.get(0)))
+			return row.get(0) * row.size();
 		else
 			return 0;
 	}
 
-	private List<PlayingCard> getDescendingRow(int i) {
+	private List<Integer> getDescendingRow(int i) {
 		switch (i) {
 		case 0:
-			return getListOfCardsFromListOfInt(new int[] { 7, 12, 16 });
+			return getListOfCardsFromListOfInt(new int[] { 7, 12, 16 }, "right");
 
 		case 1:
-			return getListOfCardsFromListOfInt(new int[] { 3, 8, 13, 17 });
+			return getListOfCardsFromListOfInt(new int[] { 3, 8, 13, 17 }, "right");
 
 		case 2:
-			return getListOfCardsFromListOfInt(new int[] { 0, 4, 9, 14, 18 });
+			return getListOfCardsFromListOfInt(new int[] { 0, 4, 9, 14, 18 }, "right");
 
 		case 3:
-			return getListOfCardsFromListOfInt(new int[] { 1, 5, 10, 15 });
+			return getListOfCardsFromListOfInt(new int[] { 1, 5, 10, 15 }, "right");
 
 		case 4:
-			return getListOfCardsFromListOfInt(new int[] { 2, 6, 11 });
+			return getListOfCardsFromListOfInt(new int[] { 2, 6, 11 }, "right");
 
 		default:
 			throw new IllegalArgumentException("Row number must be between 0 and 4.");
