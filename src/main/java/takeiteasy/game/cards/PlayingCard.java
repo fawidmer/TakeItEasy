@@ -1,5 +1,8 @@
 package takeiteasy.game.cards;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public class PlayingCard {
@@ -8,7 +11,15 @@ public class PlayingCard {
 	public final int middle;
 	public final int right;
 
+	static final List<Integer> LEFT_VALUES = Arrays.asList(2, 6, 7);
+	static final List<Integer> MIDDLE_VALUES = Arrays.asList(1, 5, 9);
+	static final List<Integer> RIGHT_VALUES = Arrays.asList(3, 4, 8);
+
 	public PlayingCard(int left, int middle, int right) {
+
+		if (!(LEFT_VALUES.contains(left) && MIDDLE_VALUES.contains(middle) && RIGHT_VALUES.contains(right)))
+			throw new IllegalArgumentException();
+
 		this.left = left;
 		this.middle = middle;
 		this.right = right;

@@ -17,6 +17,16 @@ public class CardSetTest extends TestCase {
 		assertEquals(27, cardSet.size());
 	}
 
+	@Test
+	public void testSample() {
+		List<PlayingCard> cardSet = CardSet.getNew();
+		PlayingCard testCard1 = new PlayingCard(2, 1, 3);
+		PlayingCard testCard2 = new PlayingCard(7, 9, 8);
+
+		assertTrue(cardSet.contains(testCard1));
+		assertTrue(cardSet.contains(testCard2));
+	}
+
 	@Test(expected = UnsupportedOperationException.class)
 	public void testMutability() {
 		List<PlayingCard> cardSet = CardSet.getNew();

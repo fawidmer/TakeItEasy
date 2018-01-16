@@ -11,13 +11,9 @@ public enum CardSet {
 
 		List<PlayingCard> list = new ArrayList<PlayingCard>();
 
-		int[] leftValues = { 2, 6, 7 };
-		int[] midValues = { 1, 5, 9 };
-		int[] rightValues = { 3, 4, 8 };
-
-		for (int leftValue : leftValues) {
-			for (int midValue : midValues) {
-				for (int rightValue : rightValues) {
+		for (int leftValue : PlayingCard.LEFT_VALUES) {
+			for (int midValue : PlayingCard.MIDDLE_VALUES) {
+				for (int rightValue : PlayingCard.RIGHT_VALUES) {
 					list.add(new PlayingCard(leftValue, midValue, rightValue));
 				}
 			}

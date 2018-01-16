@@ -1,5 +1,7 @@
 package takeiteasy.game;
 
+import java.util.Arrays;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
@@ -52,6 +54,47 @@ public class PlayboardTest extends TestCase {
 		assertEquals(21, board.getValueAscendingRow(4));
 		assertEquals(0, board.getValueDescendingRow(2));
 		assertEquals(245, board.getScore());
+
+		assertTrue(board.getAvailableCards().contains(new PlayingCard(6, 5, 4)));
+		assertFalse(board.getAvailableCards().contains(new PlayingCard(6, 1, 3)));
+
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testPlacingOnSameCoordinate() {
+		Playboard board = new Playboard();
+
+		board.set(new PlayingCard(6, 5, 3), 0, 0);
+		board.set(new PlayingCard(6, 5, 4), 0, 0);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testPlacingSameCard() {
+		Playboard board = new Playboard();
+
+		board.set(new PlayingCard(6, 5, 3), 0, 0);
+		board.set(new PlayingCard(6, 5, 3), 0, 1);
+	}
+
+	@Test
+	public void testPartlyFullBoard() {
+		Playboard board = new Playboard();
+
+		board.set(new PlayingCard(2, 9, 4), 0, 0);
+		board.set(new PlayingCard(6, 9, 3), 0, 1);
+		board.set(new PlayingCard(2, 1, 8), 1, 0);
+		board.set(new PlayingCard(7, 1, 8), 1, 1);
+		board.set(new PlayingCard(7, 1, 3), 1, 2);
+		board.set(new PlayingCard(6, 1, 4), 1, 3);
+
+		assertEquals(new PlayingCard(7, 1, 8), board.get(1, 1));
+		assertEquals(null, board.get(2, 2));
+
+		assertEquals(0, board.getValueVerticalRow(0));
+		assertEquals(0, board.getValueAscendingRow(4));
+		assertEquals(4, board.getValueVerticalRow(1));
+		assertEquals(4, board.getScore());
+
 	}
 
 }
