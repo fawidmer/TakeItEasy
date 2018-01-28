@@ -1,7 +1,9 @@
 package takeiteasy.game;
 
 import java.util.Arrays;
+import java.util.List;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
@@ -59,6 +61,8 @@ public class PlayboardTest extends TestCase {
 		assertTrue(board.getAvailableCards().contains(new PlayingCard(6, 5, 4)));
 		assertFalse(board.getAvailableCards().contains(new PlayingCard(6, 1, 3)));
 
+		assertTrue(board.getAllFreeCoordinates().isEmpty());
+
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -96,6 +100,22 @@ public class PlayboardTest extends TestCase {
 		assertEquals(Arrays.asList(9, 9, null), board.getVerticalRow(0));
 		assertEquals(Arrays.asList(null, null, null), board.getAscendingRow(4));
 		assertEquals(Arrays.asList(1, 1, 1, 1), board.getVerticalRow(1));
+
+		List<Pair<Integer, Integer>> freeCoords = board.getAllFreeCoordinates();
+		assertEquals(13, freeCoords.size());
+		assertTrue(freeCoords.contains(Pair.of(0, 2)));
+		assertTrue(freeCoords.contains(Pair.of(2, 0)));
+		assertTrue(freeCoords.contains(Pair.of(2, 1)));
+		assertTrue(freeCoords.contains(Pair.of(2, 2)));
+		assertTrue(freeCoords.contains(Pair.of(2, 3)));
+		assertTrue(freeCoords.contains(Pair.of(2, 4)));
+		assertTrue(freeCoords.contains(Pair.of(3, 0)));
+		assertTrue(freeCoords.contains(Pair.of(3, 1)));
+		assertTrue(freeCoords.contains(Pair.of(3, 2)));
+		assertTrue(freeCoords.contains(Pair.of(3, 3)));
+		assertTrue(freeCoords.contains(Pair.of(4, 0)));
+		assertTrue(freeCoords.contains(Pair.of(4, 1)));
+		assertTrue(freeCoords.contains(Pair.of(4, 2)));
 
 	}
 

@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 import takeiteasy.game.cards.CardSet;
 import takeiteasy.game.cards.PlayingCard;;
@@ -142,6 +145,21 @@ public class Playboard {
 		return offsets[columnNr] + rowNr;
 	}
 
+	private Pair<Integer, Integer> getSubscript(int linearIdx) {
+		if (linearIdx < 3)
+			return Pair.of(0, linearIdx);
+		else if (linearIdx < 7)
+			return Pair.of(1, linearIdx - 3);
+		else if (linearIdx < 12)
+			return Pair.of(2, linearIdx - 7);
+		else if (linearIdx < 16)
+			return Pair.of(3, linearIdx - 12);
+		else if (linearIdx < 19)
+			return Pair.of(4, linearIdx - 16);
+		else
+			throw new InternalError(linearIdx + "is not an allowed linear index.");
+	}
+
 	public List<Integer> getAscendingRow(int i) {
 		switch (i) {
 		case 0:
@@ -212,6 +230,18 @@ public class Playboard {
 
 	public Playboard copy() {
 		return new Playboard(new HashMap<>(isPlacedMap), new ArrayList<>(placedCards));
+	}
+
+	public List<Pair<Integer, Integer>> getAllFreeCoordinates() {
+
+		List<Integer> freeCoordinates = new ArrayList<>();
+
+		for (int linearIdx = 0; linearIdx < placedCards.size(); linearIdx++) {
+			if (placedCards.get(linearIdx) == null)
+				freeCoordinates.add(linearIdx);
+		}
+
+		return freeCoordinates.stream().map(linearIdx -> getSubscript(linearIdx)).collect(Collectors.toList());
 	}
 
 }

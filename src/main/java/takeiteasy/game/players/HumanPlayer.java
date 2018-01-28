@@ -1,9 +1,10 @@
-package takeiteasy.game;
+package takeiteasy.game.players;
 
 import java.util.Scanner;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import takeiteasy.game.Playboard;
 import takeiteasy.game.cards.PlayingCard;
 
 public class HumanPlayer implements Player {

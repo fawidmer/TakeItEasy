@@ -9,13 +9,24 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import takeiteasy.game.cards.CardSet;
 import takeiteasy.game.cards.PlayingCard;
+import takeiteasy.game.players.Player;
 
 public class Playmaster {
 
 	private Map<Player, Playboard> players = new HashMap<>();
-	private List<PlayingCard> unplacedCards = CardSet.getNew();
-	private List<PlayingCard> placedCards = new ArrayList<>();
-	private int turnNumber = 0;
+	private List<PlayingCard> unplacedCards;
+	private List<PlayingCard> placedCards;
+	private int turnNumber;
+
+	public Playmaster() {
+		initialize();
+	}
+
+	private void initialize() {
+		unplacedCards = CardSet.getNew();
+		placedCards = new ArrayList<>();
+		turnNumber = 0;
+	}
 
 	public void addPlayer(Player player) {
 		if (turnNumber != 0)
@@ -42,12 +53,14 @@ public class Playmaster {
 	}
 
 	public void showBoards() {
-		players.entrySet().stream().forEach(playerBoardSet -> System.out.println(playerBoardSet.getValue()));
+		players.entrySet().stream().forEach(playerBoardSet -> System.out
+				.println(playerBoardSet.getKey().getName() + ": " + playerBoardSet.getValue()));
 	}
 
 	public void runGame() {
-		while (turnNumber < 19)
+		while (turnNumber < 19) {
 			nextTurn();
+		}
 
 		showResults();
 	}
@@ -55,6 +68,13 @@ public class Playmaster {
 	private void showResults() {
 		players.entrySet().stream().forEach(playerBoardSet -> System.out.println(
 				playerBoardSet.getKey().getName() + ": " + BoardCalculations.getScore(playerBoardSet.getValue())));
+	}
+
+	public void reset() {
+		initialize();
+		for (Player player : players.keySet())
+			players.put(player, new Playboard());
+
 	}
 
 }

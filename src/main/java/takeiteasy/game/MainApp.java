@@ -1,13 +1,19 @@
 package takeiteasy.game;
 
+import takeiteasy.game.players.ComputerPlayer;
+
 public class MainApp {
 
 	public static void main(String[] args) {
 
 		Playmaster master = new Playmaster();
-		master.addPlayer(new HumanPlayer("Fabio"));
+		master.addPlayer(new ComputerPlayer());
 
-		master.runGame();
+		for (int i = 0; i < 10; i++) {
+
+			master.runGame();
+			master.reset();
+		}
 
 	}
 
