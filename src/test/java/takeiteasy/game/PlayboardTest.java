@@ -53,6 +53,8 @@ public class PlayboardTest extends TestCase {
 		assertEquals(Arrays.asList(9, 9, 9, 9), board.getVerticalRow(1));
 		assertEquals(Arrays.asList(7, 7, 7), board.getAscendingRow(4));
 		assertEquals(Arrays.asList(3, 3, 8, 3, 3), board.getDescendingRow(2));
+		
+		assertEquals(19, board.getTurnNumber());
 
 		assertTrue(board.getAvailableCards().contains(new PlayingCard(6, 5, 4)));
 		assertFalse(board.getAvailableCards().contains(new PlayingCard(6, 1, 3)));
@@ -88,6 +90,8 @@ public class PlayboardTest extends TestCase {
 
 		assertEquals(new PlayingCard(7, 1, 8), board.get(1, 1));
 		assertEquals(null, board.get(2, 2));
+		
+		assertEquals(6, board.getTurnNumber());
 
 		assertEquals(Arrays.asList(9, 9, null), board.getVerticalRow(0));
 		assertEquals(Arrays.asList(null, null, null), board.getAscendingRow(4));

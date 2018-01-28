@@ -194,4 +194,12 @@ public class Playboard {
 		}
 	}
 
+	/**
+	 * @return The current turn number (starting at 0, if no cards are placed,
+	 *         ending at 19, when the game is finished).
+	 */
+	public int getTurnNumber() {
+		return (int) placedCards.stream().filter(card -> card != null).count();
+	}
+
 }

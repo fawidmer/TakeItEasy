@@ -3,9 +3,12 @@ package takeiteasy.game.cards;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public enum CardSet {
 	;
+
+	private static Random randomGenerator = new Random();
 
 	public static List<PlayingCard> getNew() {
 
@@ -21,5 +24,9 @@ public enum CardSet {
 
 		return Collections.unmodifiableList(list);
 
+	}
+
+	public static PlayingCard drawRandom(List<PlayingCard> unplacedCards) {
+		return unplacedCards.get(randomGenerator.nextInt(unplacedCards.size()));
 	}
 }
