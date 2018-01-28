@@ -134,14 +134,6 @@ public class Playboard {
 		return offsets[columnNr] + rowNr;
 	}
 
-	public int getValueVerticalRow(int i) {
-		return getValue(getVerticalRow(i));
-	}
-
-	public int getValueAscendingRow(int i) {
-		return getValue(getAscendingRow(i));
-	}
-
 	public List<Integer> getAscendingRow(int i) {
 		switch (i) {
 		case 0:
@@ -180,22 +172,6 @@ public class Playboard {
 		return returnList;
 	}
 
-	public int getValueDescendingRow(int i) {
-		return getValue(getDescendingRow(i));
-	}
-
-	private int getValue(List<Integer> row) {
-		/* Check if any card is missing on the row */
-		if (row.stream().anyMatch(value -> value == null))
-			return 0;
-
-		/* Check if not destroyed */
-		if (row.stream().allMatch(card -> card == row.get(0)))
-			return row.get(0) * row.size();
-		else
-			return 0;
-	}
-
 	public List<Integer> getDescendingRow(int i) {
 		switch (i) {
 		case 0:
@@ -218,15 +194,4 @@ public class Playboard {
 		}
 	}
 
-	public int getScore() {
-		int totalScore = 0;
-
-		for (int i = 0; i < 5; i++) {
-			totalScore += getValueVerticalRow(i);
-			totalScore += getValueAscendingRow(i);
-			totalScore += getValueDescendingRow(i);
-		}
-
-		return totalScore;
-	}
 }

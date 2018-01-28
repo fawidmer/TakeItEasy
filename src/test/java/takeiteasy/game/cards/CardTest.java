@@ -17,9 +17,9 @@ public class CardTest extends TestCase {
 		assertEquals(card1.left, 7);
 		assertEquals(card1.middle, 5);
 		assertEquals(card1.right, 4);
-		
+
 		assertEquals(card1.toString(), "(7,5,4)");
-		
+
 		assertTrue(card1.equals(card2));
 		assertFalse(card1.equals(card3));
 	}
