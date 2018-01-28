@@ -2,18 +2,17 @@ package takeiteasy.game;
 
 import java.util.Scanner;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import takeiteasy.game.cards.PlayingCard;
 
 public class HumanPlayer implements Player {
 
-	Playboard board = new Playboard();
 	private static Scanner reader = new Scanner(System.in);
+	private final String name;
 
-	@Override
-	public void decideAndPerform(PlayingCard currentCard) {
-		System.out.println("\n\n" + board);
-		System.out.println("Please decide where to put: " + currentCard);
-		board.set(currentCard, reader.nextInt(), reader.nextInt());
+	public HumanPlayer(String name) {
+		this.name = name;
 	}
 
 	@Override
@@ -23,7 +22,17 @@ public class HumanPlayer implements Player {
 	}
 
 	@Override
-	public void showBoard() {
-		System.out.println(board);
+	public Pair<Integer, Integer> decideMove(PlayingCard currentCard, Playboard board) {
+		System.out.println("\n\n" + board);
+		System.out.println("Please decide where to put: " + currentCard);
+
+		return Pair.of(reader.nextInt(), reader.nextInt());
+
 	}
+
+	@Override
+	public String getName() {
+		return name;
+	}
+
 }

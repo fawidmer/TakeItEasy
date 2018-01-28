@@ -1,36 +1,60 @@
 package takeiteasy.game;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 import takeiteasy.game.cards.CardSet;
 import takeiteasy.game.cards.PlayingCard;
 
 public class Playmaster {
 
-	private List<Player> players = new ArrayList<>();
+	private Map<Player, Playboard> players = new HashMap<>();
 	private List<PlayingCard> unplacedCards = CardSet.getNew();
 	private List<PlayingCard> placedCards = new ArrayList<>();
 	private int turnNumber = 0;
+
+	public void addPlayer(Player player) {
+		if (turnNumber != 0)
+			throw new UnsupportedOperationException("Can only add players before the game starts.");
+		players.put(player, new Playboard());
+	}
 
 	public void nextTurn() {
 		if (turnNumber >= 19)
 			throw new UnsupportedOperationException("Game is already finished");
 
 		PlayingCard currentCard = CardSet.drawRandom(unplacedCards);
-		players.stream().forEach(player -> player.decideAndPerform(currentCard));
+		if (!unplacedCards.remove(currentCard))
+			throw new InternalError("Could not remove " + currentCard + " from " + unplacedCards);
+
+		players.entrySet().stream().forEach(playerBoardSet -> {
+			Pair<Integer, Integer> coordinates = playerBoardSet.getKey().decideMove(currentCard,
+					playerBoardSet.getValue().copy());
+			playerBoardSet.getValue().set(currentCard, coordinates.getLeft(), coordinates.getRight());
+		});
+
 		placedCards.add(currentCard);
 		turnNumber++;
 	}
 
-	public void addPlayer(Player player) {
-		if (turnNumber != 0)
-			throw new UnsupportedOperationException("Can only add players before the game starts.");
-		players.add(player);
+	public void showBoards() {
+		players.entrySet().stream().forEach(playerBoardSet -> System.out.println(playerBoardSet.getValue()));
 	}
 
-	public void showBoards() {
-		players.stream().forEach(player -> player.showBoard());
+	public void runGame() {
+		while (turnNumber < 19)
+			nextTurn();
+
+		showResults();
+	}
+
+	private void showResults() {
+		players.entrySet().stream().forEach(playerBoardSet -> System.out.println(
+				playerBoardSet.getKey().getName() + ": " + BoardCalculations.getScore(playerBoardSet.getValue())));
 	}
 
 }

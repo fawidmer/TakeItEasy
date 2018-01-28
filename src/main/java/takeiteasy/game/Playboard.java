@@ -15,10 +15,13 @@ public class Playboard {
 	private static final String SPACER = " ";
 	private static final String NEW_LINE = "\n";
 
-	private final List<PlayingCard> placedCards = new ArrayList<PlayingCard>();
-	private final Map<PlayingCard, Boolean> isPlacedMap = new HashMap<>();
+	private final List<PlayingCard> placedCards;
+	private final Map<PlayingCard, Boolean> isPlacedMap;
 
 	public Playboard() {
+		placedCards = new ArrayList<PlayingCard>();
+		isPlacedMap = new HashMap<>();
+
 		for (int i = 0; i < 19; i++)
 			placedCards.add(null);
 
@@ -26,6 +29,11 @@ public class Playboard {
 		for (PlayingCard playingCard : allCards) {
 			isPlacedMap.put(playingCard, false);
 		}
+	}
+
+	private Playboard(Map<PlayingCard, Boolean> isPlacedMap, List<PlayingCard> placedCards) {
+		this.isPlacedMap = isPlacedMap;
+		this.placedCards = placedCards;
 	}
 
 	@Override
@@ -200,6 +208,10 @@ public class Playboard {
 	 */
 	public int getTurnNumber() {
 		return (int) placedCards.stream().filter(card -> card != null).count();
+	}
+
+	public Playboard copy() {
+		return new Playboard(new HashMap<>(isPlacedMap), new ArrayList<>(placedCards));
 	}
 
 }

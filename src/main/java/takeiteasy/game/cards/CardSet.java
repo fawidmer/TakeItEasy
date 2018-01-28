@@ -22,7 +22,7 @@ public enum CardSet {
 			}
 		}
 
-		return Collections.unmodifiableList(list);
+		return list;
 
 	}
 

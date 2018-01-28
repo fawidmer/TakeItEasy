@@ -1,5 +1,6 @@
 package takeiteasy.game.cards;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
@@ -27,10 +28,15 @@ public class CardSetTest extends TestCase {
 		assertTrue(cardSet.contains(testCard2));
 	}
 
-	@Test(expected = UnsupportedOperationException.class)
-	public void testMutability() {
-		List<PlayingCard> cardSet = CardSet.getNew();
-		cardSet.remove(0);
+	@Test
+	public void testDraw() {
+		List<PlayingCard> cards = new ArrayList<>();
+		PlayingCard onlyCard = new PlayingCard(2, 1, 3);
+		cards.add(onlyCard);
+
+		PlayingCard drawnCard = CardSet.drawRandom(cards);
+
+		assertEquals(onlyCard, drawnCard);
 	}
 
 }
