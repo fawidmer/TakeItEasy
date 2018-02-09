@@ -1,5 +1,6 @@
 package takeiteasy.game.players;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -25,22 +26,20 @@ import takeiteasy.game.cards.PlayingCard;
  */
 public class ComputerPlayer implements Player {
 
-	private final long maximumTime;
+	private final Duration maximumTime;
 	private final Verbosity verbosity;
-	private final static TimeUnit MS = TimeUnit.MILLISECONDS;
 
 	/**
 	 * Constructor.
 	 * 
-	 * @param maximumTime
-	 *            The maximum time (in milliseconds) allowed for the
-	 *            calculation.
+	 * @param duration
+	 *            The maximum time {@link Duration} allowed for the calculation.
 	 * @param verbosity
 	 *            The {@link Verbosity} of the player.
 	 */
-	public ComputerPlayer(long maximumTime, Verbosity verbosity) {
+	public ComputerPlayer(Duration duration, Verbosity verbosity) {
 		this.verbosity = verbosity;
-		this.maximumTime = maximumTime;
+		this.maximumTime = duration;
 	}
 
 	@Override
@@ -61,7 +60,7 @@ public class ComputerPlayer implements Player {
 					.submit(() -> getBest(movePossibilities, playboard, currentCard, currentDepth).getLeft());
 
 			try {
-				bestIdx = result.get(maximumTime - stopWatch.elapsed(MS), MS);
+				bestIdx = result.get(maximumTime.minus(stopWatch.elapsed()).toMillis(), TimeUnit.MILLISECONDS);
 			} catch (InterruptedException | ExecutionException e) {
 				throw new RuntimeException(e);
 			} catch (TimeoutException e) {
