@@ -1,13 +1,10 @@
 package takeiteasy.game;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.BlockJUnit4ClassRunner;
 
 import junit.framework.TestCase;
 import takeiteasy.game.cards.PlayingCard;
 
-@RunWith(value = BlockJUnit4ClassRunner.class)
 public class BoardCalculationsTest extends TestCase {
 
 	@Test

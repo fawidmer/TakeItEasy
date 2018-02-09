@@ -4,12 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.BlockJUnit4ClassRunner;
 
 import junit.framework.TestCase;
 
-@RunWith(value = BlockJUnit4ClassRunner.class)
 public class CardSetTest extends TestCase {
 
 	@Test
