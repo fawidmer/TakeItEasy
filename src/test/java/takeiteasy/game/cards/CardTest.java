@@ -5,6 +5,7 @@ import org.junit.Test;
 import junit.framework.TestCase;
 
 public class CardTest extends TestCase {
+
 	@Test
 	public void testNormalCard() {
 		PlayingCard card1 = new PlayingCard(7, 5, 4);
@@ -21,18 +22,30 @@ public class CardTest extends TestCase {
 		assertFalse(card1.equals(card3));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testInexistentCard1() {
-		PlayingCard card = new PlayingCard(7, 5, 1);
+		try {
+			PlayingCard card = new PlayingCard(7, 5, 1);
+			fail();
+		} catch (IllegalArgumentException e) {
+		}
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testInexistentCard2() {
-		PlayingCard card = new PlayingCard(7, 6, 4);
+		try {
+			PlayingCard card = new PlayingCard(7, 6, 4);
+			fail();
+		} catch (IllegalArgumentException e) {
+		}
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testInexistentCard3() {
-		PlayingCard card = new PlayingCard(3, 5, 4);
+		try {
+			PlayingCard card = new PlayingCard(3, 5, 4);
+			fail();
+		} catch (IllegalArgumentException e) {
+		}
 	}
 }

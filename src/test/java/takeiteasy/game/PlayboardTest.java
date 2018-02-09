@@ -5,8 +5,6 @@ import java.util.List;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.BlockJUnit4ClassRunner;
 
 import junit.framework.TestCase;
 import takeiteasy.game.cards.PlayingCard;
@@ -65,20 +63,27 @@ public class PlayboardTest extends TestCase {
 
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testPlacingOnSameCoordinate() {
 		Playboard board = new Playboard();
 
 		board.set(new PlayingCard(6, 5, 3), 0, 0);
-		board.set(new PlayingCard(6, 5, 4), 0, 0);
+		try {
+			board.set(new PlayingCard(6, 5, 4), 0, 0);
+		} catch (IllegalArgumentException e) {
+		}
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testPlacingSameCard() {
 		Playboard board = new Playboard();
 
 		board.set(new PlayingCard(6, 5, 3), 0, 0);
-		board.set(new PlayingCard(6, 5, 3), 0, 1);
+		try {
+			board.set(new PlayingCard(6, 5, 3), 0, 1);
+			fail();
+		} catch (IllegalArgumentException e) {
+		}
 	}
 
 	@Test
