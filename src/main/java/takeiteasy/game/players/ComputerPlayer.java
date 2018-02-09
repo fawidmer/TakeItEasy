@@ -16,6 +16,7 @@ import com.google.common.base.Stopwatch;
 
 import takeiteasy.game.BoardCalculations;
 import takeiteasy.game.Playboard;
+import takeiteasy.game.Verbosity;
 import takeiteasy.game.cards.PlayingCard;
 
 /**
@@ -25,6 +26,7 @@ import takeiteasy.game.cards.PlayingCard;
 public class ComputerPlayer implements Player {
 
 	private final long maximumTime;
+	private final Verbosity verbosity;
 	private final static TimeUnit MS = TimeUnit.MILLISECONDS;
 
 	/**
@@ -33,8 +35,11 @@ public class ComputerPlayer implements Player {
 	 * @param maximumTime
 	 *            The maximum time (in milliseconds) allowed for the
 	 *            calculation.
+	 * @param verbosity
+	 *            The {@link Verbosity} of the player.
 	 */
-	public ComputerPlayer(long maximumTime) {
+	public ComputerPlayer(long maximumTime, Verbosity verbosity) {
+		this.verbosity = verbosity;
 		this.maximumTime = maximumTime;
 	}
 
@@ -69,7 +74,9 @@ public class ComputerPlayer implements Player {
 			depth++;
 		}
 
-		System.out.println("Maximum depth: " + depth);
+		if (verbosity == Verbosity.verbose)
+			System.out.println("Maximum depth: " + depth);
+
 		service.shutdownNow();
 		return movePossibilities.get(bestIdx);
 	}

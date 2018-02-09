@@ -23,11 +23,16 @@ public class Playmaster {
 	private List<PlayingCard> unplacedCards;
 	private List<PlayingCard> placedCards;
 	private int turnNumber;
+	private final Verbosity verbosity;
 
 	/**
 	 * Constructor.
+	 * 
+	 * @param verbosity
+	 *            The {@link Verbosity} for the whole game.
 	 */
-	public Playmaster() {
+	public Playmaster(Verbosity verbosity) {
+		this.verbosity = verbosity;
 		initialize();
 	}
 
@@ -85,7 +90,8 @@ public class Playmaster {
 	public void runGame() {
 		while (turnNumber < 19) {
 			nextTurn();
-			showBoards();
+			if (verbosity == Verbosity.verbose)
+				showBoards();
 		}
 
 		showResults();

@@ -6,8 +6,8 @@ public class MainApp {
 
 	public static void main(String[] args) {
 
-		Playmaster master = new Playmaster();
-		master.addPlayer(new ComputerPlayer(10000));
+		Playmaster master = new Playmaster(Verbosity.silent);
+		master.addPlayer(new ComputerPlayer(10000, Verbosity.silent));
 
 		for (int i = 0; i < 10; i++) {
 
