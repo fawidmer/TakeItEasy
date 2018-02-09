@@ -244,4 +244,8 @@ public class Playboard {
 		return freeCoordinates.stream().map(linearIdx -> getSubscript(linearIdx)).collect(Collectors.toList());
 	}
 
+	public boolean isComplete() {
+		return getTurnNumber() == 19;
+	}
+
 }

@@ -54,12 +54,13 @@ public class Playmaster {
 
 	public void showBoards() {
 		players.entrySet().stream().forEach(playerBoardSet -> System.out
-				.println(playerBoardSet.getKey().getName() + ": " + playerBoardSet.getValue()));
+				.println(playerBoardSet.getKey().getName() + ":\n" + playerBoardSet.getValue()));
 	}
 
 	public void runGame() {
 		while (turnNumber < 19) {
 			nextTurn();
+			showBoards();
 		}
 
 		showResults();
