@@ -38,7 +38,7 @@ public class ComputerPlayer implements Player {
 		return movePossibilities.get(bestIdx);
 	}
 
-	private Pair<Integer, Double> getBest(List<Pair<Integer, Integer>> movePossibilities, Playboard playboard,
+	private static Pair<Integer, Double> getBest(List<Pair<Integer, Integer>> movePossibilities, Playboard playboard,
 			PlayingCard currentCard, int localDepth) {
 		double bestValue = Double.NEGATIVE_INFINITY;
 		int bestIdx = -1;
@@ -59,7 +59,7 @@ public class ComputerPlayer implements Player {
 		return Pair.of(bestIdx, bestValue);
 	}
 
-	private double getValue(int localDepth, Playboard currentBoard) {
+	private static double getValue(int localDepth, Playboard currentBoard) {
 		if (currentBoard.isFull())
 			return BoardCalculations.getScore(currentBoard);
 
