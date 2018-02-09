@@ -12,6 +12,11 @@ import org.apache.commons.lang3.tuple.Pair;
 import takeiteasy.game.cards.CardSet;
 import takeiteasy.game.cards.PlayingCard;;
 
+/**
+ * Class representing a Take it easy playboard.
+ * 
+ * @author Fabio Widmer
+ */
 public class Playboard {
 
 	private static final String LONG_SPACER = "    ";
@@ -21,6 +26,9 @@ public class Playboard {
 	private final List<PlayingCard> placedCards;
 	private final Map<PlayingCard, Boolean> isPlacedMap;
 
+	/**
+	 * Constructor constructing an empty play board.
+	 */
 	public Playboard() {
 		placedCards = new ArrayList<PlayingCard>();
 		isPlacedMap = new HashMap<>();
@@ -60,6 +68,9 @@ public class Playboard {
 		return string;
 	}
 
+	/**
+	 * @return A list of all cards which have not been placed yet.
+	 */
 	public List<PlayingCard> getAvailableCards() {
 
 		List<PlayingCard> list = new ArrayList<>();
@@ -95,6 +106,12 @@ public class Playboard {
 			return card.toString();
 	}
 
+	/**
+	 * @param idx
+	 *            The row number
+	 * @return A {@link List} of {@link Integer} containing the values of the
+	 *         cards in the specified row.
+	 */
 	public List<Integer> getVerticalRow(int idx) {
 		List<Integer> list = new ArrayList<>();
 		int numberOfCards;
@@ -118,6 +135,65 @@ public class Playboard {
 	}
 
 	/**
+	 * 
+	 * @param i
+	 *            The row number
+	 * @return A {@link List} of {@link Integer} containing the values of the
+	 *         cards in the specified row.
+	 */
+	public List<Integer> getAscendingRow(int i) {
+		switch (i) {
+		case 0:
+			return getListOfCardsFromListOfInt(new int[] { 0, 3, 7 }, "left");
+
+		case 1:
+			return getListOfCardsFromListOfInt(new int[] { 1, 4, 8, 12 }, "left");
+
+		case 2:
+			return getListOfCardsFromListOfInt(new int[] { 2, 5, 9, 13, 16 }, "left");
+
+		case 3:
+			return getListOfCardsFromListOfInt(new int[] { 6, 10, 14, 17 }, "left");
+
+		case 4:
+			return getListOfCardsFromListOfInt(new int[] { 11, 15, 18 }, "left");
+
+		default:
+			throw new IllegalArgumentException("Row number must be between 0 and 4.");
+		}
+
+	}
+
+	/**
+	 * 
+	 * @param i
+	 *            The row number
+	 * @return A {@link List} of {@link Integer} containing the values of the
+	 *         cards in the specified row.
+	 */
+	public List<Integer> getDescendingRow(int i) {
+		switch (i) {
+		case 0:
+			return getListOfCardsFromListOfInt(new int[] { 7, 12, 16 }, "right");
+
+		case 1:
+			return getListOfCardsFromListOfInt(new int[] { 3, 8, 13, 17 }, "right");
+
+		case 2:
+			return getListOfCardsFromListOfInt(new int[] { 0, 4, 9, 14, 18 }, "right");
+
+		case 3:
+			return getListOfCardsFromListOfInt(new int[] { 1, 5, 10, 15 }, "right");
+
+		case 4:
+			return getListOfCardsFromListOfInt(new int[] { 2, 6, 11 }, "right");
+
+		default:
+			throw new IllegalArgumentException("Row number must be between 0 and 4.");
+		}
+	}
+
+	/**
 	 * @param columnNr
 	 * @param rowNr
 	 * @return <code>null</code>, if no card is placed at the given coordinates.
@@ -126,6 +202,16 @@ public class Playboard {
 		return placedCards.get(getLinearIndex(columnNr, rowNr));
 	}
 
+	/**
+	 * Sets a playing card at the specified position on the board.
+	 * 
+	 * @param playingCard
+	 *            The card to set.
+	 * @param columnNr
+	 *            The column number (x-coordinate)
+	 * @param rowNr
+	 *            The row number (y-coordinate)
+	 */
 	public void set(PlayingCard playingCard, int columnNr, int rowNr) {
 
 		if (isPlacedMap.get(playingCard))
@@ -160,29 +246,6 @@ public class Playboard {
 			throw new InternalError(linearIdx + "is not an allowed linear index.");
 	}
 
-	public List<Integer> getAscendingRow(int i) {
-		switch (i) {
-		case 0:
-			return getListOfCardsFromListOfInt(new int[] { 0, 3, 7 }, "left");
-
-		case 1:
-			return getListOfCardsFromListOfInt(new int[] { 1, 4, 8, 12 }, "left");
-
-		case 2:
-			return getListOfCardsFromListOfInt(new int[] { 2, 5, 9, 13, 16 }, "left");
-
-		case 3:
-			return getListOfCardsFromListOfInt(new int[] { 6, 10, 14, 17 }, "left");
-
-		case 4:
-			return getListOfCardsFromListOfInt(new int[] { 11, 15, 18 }, "left");
-
-		default:
-			throw new IllegalArgumentException("Row number must be between 0 and 4.");
-		}
-
-	}
-
 	private List<Integer> getListOfCardsFromListOfInt(int[] indices, String fieldName) {
 		List<Integer> returnList = new ArrayList<>();
 
@@ -198,28 +261,6 @@ public class Playboard {
 		return returnList;
 	}
 
-	public List<Integer> getDescendingRow(int i) {
-		switch (i) {
-		case 0:
-			return getListOfCardsFromListOfInt(new int[] { 7, 12, 16 }, "right");
-
-		case 1:
-			return getListOfCardsFromListOfInt(new int[] { 3, 8, 13, 17 }, "right");
-
-		case 2:
-			return getListOfCardsFromListOfInt(new int[] { 0, 4, 9, 14, 18 }, "right");
-
-		case 3:
-			return getListOfCardsFromListOfInt(new int[] { 1, 5, 10, 15 }, "right");
-
-		case 4:
-			return getListOfCardsFromListOfInt(new int[] { 2, 6, 11 }, "right");
-
-		default:
-			throw new IllegalArgumentException("Row number must be between 0 and 4.");
-		}
-	}
-
 	/**
 	 * @return The current turn number (starting at 0, if no cards are placed,
 	 *         ending at 19, when the game is finished).
@@ -228,10 +269,16 @@ public class Playboard {
 		return (int) placedCards.stream().filter(card -> card != null).count();
 	}
 
+	/**
+	 * @return A deep copy of the {@link Playboard}.
+	 */
 	public Playboard copy() {
 		return new Playboard(new HashMap<>(isPlacedMap), new ArrayList<>(placedCards));
 	}
 
+	/**
+	 * @return A list of all coordinates which are empty.
+	 */
 	public List<Pair<Integer, Integer>> getAllFreeCoordinates() {
 
 		List<Integer> freeCoordinates = new ArrayList<>();
@@ -244,7 +291,10 @@ public class Playboard {
 		return freeCoordinates.stream().map(linearIdx -> getSubscript(linearIdx)).collect(Collectors.toList());
 	}
 
-	public boolean isComplete() {
+	/**
+	 * @return <code>true</code>, if the board is full.
+	 */
+	public boolean isFull() {
 		return getTurnNumber() == 19;
 	}
 

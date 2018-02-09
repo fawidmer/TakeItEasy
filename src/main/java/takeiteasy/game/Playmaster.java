@@ -11,6 +11,12 @@ import takeiteasy.game.cards.CardSet;
 import takeiteasy.game.cards.PlayingCard;
 import takeiteasy.game.players.Player;
 
+/**
+ * A class handling a fair game of Take it easy with potentially multiple
+ * players.
+ * 
+ * @author Fabio Widmer
+ */
 public class Playmaster {
 
 	private Map<Player, Playboard> players = new HashMap<>();
@@ -18,6 +24,9 @@ public class Playmaster {
 	private List<PlayingCard> placedCards;
 	private int turnNumber;
 
+	/**
+	 * Constructor.
+	 */
 	public Playmaster() {
 		initialize();
 	}
@@ -28,12 +37,22 @@ public class Playmaster {
 		turnNumber = 0;
 	}
 
+	/**
+	 * Add a player to the game. Only works if, the game has not been started
+	 * yet.
+	 * 
+	 * @param player
+	 */
 	public void addPlayer(Player player) {
 		if (turnNumber != 0)
 			throw new UnsupportedOperationException("Can only add players before the game starts.");
 		players.put(player, new Playboard());
 	}
 
+	/**
+	 * Perform the next turn. Thereby, a new random card is drawn an every
+	 * player is expected to decide where to put the card.
+	 */
 	public void nextTurn() {
 		if (turnNumber >= 19)
 			throw new UnsupportedOperationException("Game is already finished");
@@ -52,11 +71,17 @@ public class Playmaster {
 		turnNumber++;
 	}
 
+	/**
+	 * Prints the boards of all players to the console.
+	 */
 	public void showBoards() {
 		players.entrySet().stream().forEach(playerBoardSet -> System.out
 				.println(playerBoardSet.getKey().getName() + ":\n" + playerBoardSet.getValue()));
 	}
 
+	/**
+	 * Automatically runs a full game from start to finish.
+	 */
 	public void runGame() {
 		while (turnNumber < 19) {
 			nextTurn();
@@ -71,6 +96,9 @@ public class Playmaster {
 				playerBoardSet.getKey().getName() + ": " + BoardCalculations.getScore(playerBoardSet.getValue())));
 	}
 
+	/**
+	 * Resets. Thereby, all players get new, empty boards.
+	 */
 	public void reset() {
 		initialize();
 		for (Player player : players.keySet())

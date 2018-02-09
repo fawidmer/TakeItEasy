@@ -10,10 +10,20 @@ import takeiteasy.game.BoardCalculations;
 import takeiteasy.game.Playboard;
 import takeiteasy.game.cards.PlayingCard;
 
+/**
+ * 
+ * @author Fabio Widmer
+ */
 public class ComputerPlayer implements Player {
 
 	private final int depth;
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param depth
+	 *            The depth which to search to.
+	 */
 	public ComputerPlayer(int depth) {
 		this.depth = depth;
 	}
@@ -50,7 +60,7 @@ public class ComputerPlayer implements Player {
 	}
 
 	private double getValue(int localDepth, Playboard currentBoard) {
-		if (currentBoard.isComplete())
+		if (currentBoard.isFull())
 			return BoardCalculations.getScore(currentBoard);
 
 		if (localDepth < 0)

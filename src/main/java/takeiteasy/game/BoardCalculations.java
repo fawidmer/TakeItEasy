@@ -1,8 +1,17 @@
 package takeiteasy.game;
 
+/**
+ * Enum containing methods for calculations concerning {@link Playboard}.
+ * 
+ * @author Fabio Widmer
+ */
 public enum BoardCalculations {
 	;
-
+	/**
+	 * @param board
+	 *            The {@link Playboard} to operate on.
+	 * @return The number of free rows (in all directions).
+	 */
 	public static int getNumberOfFreeRows(Playboard board) {
 		int numberOfFreeRows = 0;
 
@@ -21,6 +30,7 @@ public enum BoardCalculations {
 
 	/**
 	 * @param board
+	 *            The {@link Playboard} to operate on.
 	 * @return The score of the board. If the game is not finished yet, returns
 	 *         the current score (i.e. does not count unfinished rows).
 	 */
@@ -37,6 +47,11 @@ public enum BoardCalculations {
 		return totalScore;
 	}
 
+	/**
+	 * @param board
+	 *            The {@link Playboard} to operate on.
+	 * @return The number of destroyed rows (in all directions).
+	 */
 	public static int getNumberOfDestroyedRows(Playboard board) {
 		int numberOfDestroyedRows = 0;
 

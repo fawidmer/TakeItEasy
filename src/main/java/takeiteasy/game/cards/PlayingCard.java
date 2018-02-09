@@ -5,16 +5,35 @@ import java.util.List;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+/**
+ * Class representing a playing card of a Take it easy game.
+ * 
+ * @author Fabio Widmer
+ *
+ */
 public class PlayingCard {
 
+	/** Left value */
 	public final int left;
+	/** Middle value */
 	public final int middle;
+	/** Right value */
 	public final int right;
 
 	static final List<Integer> LEFT_VALUES = Arrays.asList(2, 6, 7);
 	static final List<Integer> MIDDLE_VALUES = Arrays.asList(1, 5, 9);
 	static final List<Integer> RIGHT_VALUES = Arrays.asList(3, 4, 8);
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param left
+	 *            Left value
+	 * @param middle
+	 *            Middle value
+	 * @param right
+	 *            Right value
+	 */
 	public PlayingCard(int left, int middle, int right) {
 
 		if (!(LEFT_VALUES.contains(left) && MIDDLE_VALUES.contains(middle) && RIGHT_VALUES.contains(right)))

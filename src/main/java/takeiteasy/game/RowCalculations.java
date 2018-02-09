@@ -2,6 +2,11 @@ package takeiteasy.game;
 
 import java.util.List;
 
+/**
+ * Enum containing methods for calculations concerning rows of cards.
+ * 
+ * @author Fabio Widmer
+ */
 public enum RowCalculations {
 	;
 
@@ -45,6 +50,10 @@ public enum RowCalculations {
 		return value;
 	}
 
+	/**
+	 * @param row
+	 * @return <code>true</code>, if and only if the row is empty.
+	 */
 	public static boolean isFree(List<Integer> row) {
 		if (getValue(row) == 0)
 			return true;
@@ -53,6 +62,10 @@ public enum RowCalculations {
 
 	}
 
+	/**
+	 * @param row
+	 * @return <code>true</code>, if and only if the row is destroyed.
+	 */
 	public static boolean isDestroyed(List<Integer> row) {
 		if (getValue(row) == -1)
 			return true;

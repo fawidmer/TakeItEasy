@@ -62,7 +62,7 @@ public class PlayboardTest extends TestCase {
 		assertFalse(board.getAvailableCards().contains(new PlayingCard(6, 1, 3)));
 
 		assertTrue(board.getAllFreeCoordinates().isEmpty());
-		assertTrue(board.isComplete());
+		assertTrue(board.isFull());
 
 	}
 
@@ -118,7 +118,7 @@ public class PlayboardTest extends TestCase {
 		assertTrue(freeCoords.contains(Pair.of(4, 1)));
 		assertTrue(freeCoords.contains(Pair.of(4, 2)));
 
-		assertFalse(board.isComplete());
+		assertFalse(board.isFull());
 
 	}
 

@@ -7,11 +7,22 @@ import org.apache.commons.lang3.tuple.Pair;
 import takeiteasy.game.Playboard;
 import takeiteasy.game.cards.PlayingCard;
 
+/**
+ * A human player (uses the console for user input).
+ * 
+ * @author Fabio Widmer
+ */
 public class HumanPlayer implements Player {
 
 	private static Scanner reader = new Scanner(System.in);
 	private final String name;
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param name
+	 *            The name of the human player.
+	 */
 	public HumanPlayer(String name) {
 		this.name = name;
 	}
@@ -28,7 +39,6 @@ public class HumanPlayer implements Player {
 		System.out.println("Please decide where to put: " + currentCard);
 
 		return Pair.of(reader.nextInt(), reader.nextInt());
-
 	}
 
 	@Override
