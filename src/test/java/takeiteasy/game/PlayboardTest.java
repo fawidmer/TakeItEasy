@@ -11,7 +11,6 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 import junit.framework.TestCase;
 import takeiteasy.game.cards.PlayingCard;
 
-@RunWith(value = BlockJUnit4ClassRunner.class)
 public class PlayboardTest extends TestCase {
 
 	@Test
