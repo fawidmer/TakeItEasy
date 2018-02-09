@@ -2,9 +2,17 @@ package takeiteasy.game.players;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.tuple.Pair;
+
+import com.google.common.base.Stopwatch;
 
 import takeiteasy.game.BoardCalculations;
 import takeiteasy.game.Playboard;
@@ -16,25 +24,53 @@ import takeiteasy.game.cards.PlayingCard;
  */
 public class ComputerPlayer implements Player {
 
-	private final int depth;
+	private final long maximumTime;
+	private final static TimeUnit MS = TimeUnit.MILLISECONDS;
 
 	/**
 	 * Constructor.
 	 * 
-	 * @param depth
-	 *            The depth which to search to.
+	 * @param maximumTime
+	 *            The maximum time (in milliseconds) allowed for the
+	 *            calculation.
 	 */
-	public ComputerPlayer(int depth) {
-		this.depth = depth;
+	public ComputerPlayer(long maximumTime) {
+		this.maximumTime = maximumTime;
 	}
 
 	@Override
 	public Pair<Integer, Integer> decideMove(PlayingCard currentCard, Playboard playboard) {
 
+		Stopwatch stopWatch = Stopwatch.createStarted();
+
+		final ExecutorService service = Executors.newSingleThreadExecutor();
+
 		List<Pair<Integer, Integer>> movePossibilities = playboard.getAllFreeCoordinates();
 
-		int bestIdx = getBest(movePossibilities, playboard, currentCard, depth).getLeft();
+		int bestIdx = 0;
+		int depth = 0;
+		while (true) {
 
+			final int currentDepth = depth;
+			Future<Integer> result = service
+					.submit(() -> getBest(movePossibilities, playboard, currentCard, currentDepth).getLeft());
+
+			try {
+				bestIdx = result.get(maximumTime - stopWatch.elapsed(MS), MS);
+			} catch (InterruptedException | ExecutionException e) {
+				throw new RuntimeException(e);
+			} catch (TimeoutException e) {
+				break;
+			}
+
+			if (movePossibilities.size() - 1 - depth <= 0)
+				break;
+
+			depth++;
+		}
+
+		System.out.println("Maximum depth: " + depth);
+		service.shutdownNow();
 		return movePossibilities.get(bestIdx);
 	}
 
