@@ -1,0 +1,26 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: Open-SESAME-Battery
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Marco
+    family-names: Beyeler
+    email: energy@bfh.ch
+    affiliation: Bern University of Applied Science
+  - given-names: 'Shubham Sharad '
+    family-names: 'Bhoir '
+    email: shubham.bhoir@csem.ch
+    affiliation: CSEM
+  - given-names: Stefan
+    family-names: Broennimann
+    email: stefan.broennimann@bfh.ch
+    affiliation: Bern University of Applied Science
+  - given-names: 'Yoann '
+    family-names: Moullet
+    email: energy@bfh.ch
+    affiliation: Bern University of Applied Science
